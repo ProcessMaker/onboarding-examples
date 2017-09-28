@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ProcessMaker.IO Introduction Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+        var pmio_webook = 'http://core.pmio.local/api/v1/processes/079c85a8-2e60-4de5-93ed-1da209e6bcf8/events/2ce064b3-7417-470d-bb6c-a924f6431e21/webhook';
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Widgets Co. Contact Form</h1>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="contactInputName">Your Name</label>
+                    <input id="contactInputName" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="contactInputEmail">Your Email</label>
+                    <input id="contactInputEmail" class="form-control" placeholder="Email">
+                </div>
+                 <div class="form-group">
+                    <label for="contactInputSubject">Reason for contacting us?</label>
+                    <input id="contactInputSubject" class="form-control" placeholder="Subject">
+                </div>
+                 <div class="form-group">
+                    <label for="contactInputMessage">Message</label>
+                     <textarea id="contactInputMessage" class="form-control" placeholder="Message"></textarea>
+                </div>
+                <p class="hide alert alert-success">Your information has been submitted. Thank you.</p>
+                <p class="hide alert alert-danger">There was a problem submitting your information. Please try again.</p>
+                <button type="submit" class="btn btn-default">Contact Us</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Bind to our submit and then
+    $('#contact-form').on('submit', function(e) {
+        $.ajax({
+            url: pmio_webook,
+            type: 'POST',
+            data: {
+                name: $('#contactInputName').val(),
+                email: $('#contactInputEmail').val(),
+                subject: $('#contactInputEmail').val(),
+                message: $('#contactInputMessage').val()
+            }
+        })
+            // Our promise handler on success
+            .done(function() {
+                $('#contact-form button, #contact-form p.alert-danger').remove();
+                $('#contact-form p.alert-success').removeClass('hide');
+            })
+            // And our promise handler on failure
+            .fail(function(xhr, status, err) {
+                $('#contact-form p.alert-danger').removeClass('hide');
+            });
+        return false;
+    });
+
+</script>
+</body>
+
+</html>

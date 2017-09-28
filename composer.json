@@ -1,0 +1,15 @@
+{
+    "name": "tdondich/pmio-introduction",
+    "description": "Introduction to using processmaker.io",
+    "authors": [
+        {
+            "name": "Taylor Dondich",
+            "email": "taylor@processmaker.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "processmaker/pmio-sdk-php": "dev-master",
+        "vlucas/phpdotenv": "2.4.*"
+    }
+}
