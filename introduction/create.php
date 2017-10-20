@@ -44,6 +44,24 @@ $response = $pmio->addEvent($process->getId(), new EventCreateItem([
 ]));
 $startEvent = $response->getData();
 
+// Then we add our script task
+$response = $pmio->addTask($process->getId(), new TaskCreateItem([
+    'data' => new Task([
+        'attributes' => new TaskAttributes([
+            'name' => 'Convert Data Structure',
+            'type' => 'SCRIPT-TASK',
+            'script' => '
+            aData.name=aData.request.data.name;
+            aData.email=aData.request.data.email;
+            aData.subject=aData.request.data.subject;
+            aData.message=aData.request.data.message;'
+
+            // '{"language":"LUA","script":"aData.name=aData.request.data.name;"}'
+        ])
+    ])
+]));
+$scriptTask = $response->getData();
+
 $response = $pmio->addEvent($process->getId(), new EventCreateItem([
     'data' => new Event([
         'attributes' => new EventAttributes([
@@ -95,9 +113,22 @@ $pmio->addTaskConnector($process->getId(), $serviceTask->getId(), new TaskConnec
 $pmio->addFlow($process->getId(), new FlowCreateItem([
     'data' => new Flow([
         'attributes' => new FlowAttributes([
-            'name' => 'Start to Service Task',
+            'name' => 'Start to Script Task',
             'from_object_id' => $startEvent->getId(),
             'from_object_type' => $startEvent->getType(),
+            'to_object_id' => $scriptTask->getId(),
+            'to_object_type' => $scriptTask->getType()
+        ])
+    ])
+]));
+
+// Now, let's create the flow from script task to our service task
+$pmio->addFlow($process->getId(), new FlowCreateItem([
+    'data' => new Flow([
+        'attributes' => new FlowAttributes([
+            'name' => 'Script Task to Service Task',
+            'from_object_id' => $scriptTask->getId(),
+            'from_object_type' => $scriptTask->getType(),
             'to_object_id' => $serviceTask->getId(),
             'to_object_type' => $serviceTask->getType()
         ])
