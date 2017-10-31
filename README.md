@@ -61,11 +61,12 @@ php ./introduction/create.php
 
 You should receive the newly created Process ID, as well as the Start Event ID.  These 
 are used in the next step as part of the webhook url to call.
+Additionally there are RED_IDs which also could be used in webhook url call (these are specified in create.php script).
 
 ```bash
 $ php ./introduction/create.php
-Process ID: b78fc897-91f8-4f38-b8e3-7d60267d9b67
-Start Event ID: 271bf2f1-47bb-4616-9edb-3892b5696710
+Process ID: b78fc897-91f8-4f38-b8e3-7d60267d9b67 (REF_ID: Intro_process)
+Start Event ID: 271bf2f1-47bb-4616-9edb-3892b5696710 (REF_ID: Start_event)
 ```
 
 #### Modifying the HTML Form
@@ -75,6 +76,14 @@ The URL should contain the process ID and the start event ID you gathered when c
 ```html
 <script>
     var pmio_webook = 'https://fds23zz.api.processmaker.io/api/v1/processes/b78fc897-91f8-4f38-b8e3-7d60267d9b67/events/271bf2f1-47bb-4616-9edb-3892b5696710/webhook';
+</script>
+```
+
+Alternatively you could use REF_ID if it was specified when created an object.
+
+```html
+<script>
+    var pmio_webook = 'https://fds23zz.api.processmaker.io/api/v1/processes/Intro_process/events/Start_event/webhook';
 </script>
 ```
 
