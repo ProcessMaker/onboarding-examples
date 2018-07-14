@@ -9,7 +9,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "processmaker/pmio-sdk-php": "dev-master",
+        "processmaker/pmio-sdk-php": "dev-master#727d327",
         "vlucas/phpdotenv": "2.4.*"
     }
 }

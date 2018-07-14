@@ -25,7 +25,8 @@ use ProcessMaker\PMIO\Model\Flow;
 $response = $pmio->addProcess(new ProcessCreateItem([
     'data' => new Process([
         'attributes' => new ProcessAttributes([
-            'name' => 'Introduction Process'
+            'name' => 'Introduction Process',
+            'ref_id' => 'Intro_process'
         ])
     ])
 ]));
@@ -37,7 +38,8 @@ $response = $pmio->addEvent($process->getId(), new EventCreateItem([
     'data' => new Event([
         'attributes' => new EventAttributes([
             'name' => 'Start',
-            'type' => 'START',
+            'ref_id' => 'Start_event',
+            'type' => EventAttributes::TYPE_START,
             'definition' => EventAttributes::DEFINITION_MESSAGE
         ])
     ])
@@ -48,7 +50,7 @@ $response = $pmio->addEvent($process->getId(), new EventCreateItem([
     'data' => new Event([
         'attributes' => new EventAttributes([
             'name' => 'End',
-            'type' => 'END',
+            'type' => EventAttributes::TYPE_END,
             'definition' => EventAttributes::DEFINITION_NONE
         ])
     ])
@@ -60,7 +62,7 @@ $response = $pmio->addTask($process->getId(), new TaskCreateItem([
     'data' => new Task([
         'attributes' => new TaskAttributes([
             'name' => 'Send Contact Form Email',
-            'type' => 'SERVICE-TASK'
+            'type' => TaskAttributes::TYPE_SERVICE_TASK
         ])
     ])
 ]));
@@ -95,7 +97,7 @@ $pmio->addTaskConnector($process->getId(), $serviceTask->getId(), new TaskConnec
 $pmio->addFlow($process->getId(), new FlowCreateItem([
     'data' => new Flow([
         'attributes' => new FlowAttributes([
-            'name' => 'Start to Service Task',
+            'name' => 'Start to Script Task',
             'from_object_id' => $startEvent->getId(),
             'from_object_type' => $startEvent->getType(),
             'to_object_id' => $serviceTask->getId(),
@@ -117,5 +119,5 @@ $pmio->addFlow($process->getId(), new FlowCreateItem([
     ])
 ]));
 
-print("Process ID: " . $process->getId() . "\n");
-print("Start Event ID: " . $startEvent->getId() . "\n");
+print("Process ID: " . $process->getId() . " (REF_ID: " . $process->getAttributes()->getRefId() . ")\n");
+print("Start Event ID: " . $startEvent->getId() . " (REF_ID: " . $startEvent->getAttributes()->getRefId() . ")\n");

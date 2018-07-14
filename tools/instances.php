@@ -13,14 +13,16 @@ if(!(count($argv) > 1)) {
 $processId = $argv[1];
 
 print("Fetching instances for process " . $processId . "\n");
-$response = $pmio->findInstances($processId);
+
+/** @var \ProcessMaker\PMIO\Client $pmio */
+$response = $pmio->listInstances($processId);
 $instances = $response->getData();
 
 print("Found " . count($instances) . " Instance(s)\n");
 foreach($instances as $instance) {
     print($instance->getId() . ": " . $instance->getAttributes()->getStatus() . "\n");
     // Now, let's fetch the tokens for this instance and their state
-    $response = $pmio->findTokens($processId, $instance->getId());
+    $response = $pmio->listTokens($processId, $instance->getId());
     $tokens = $response->getData();
     if(count($tokens)) {
         foreach($tokens as $token) {

@@ -5,10 +5,11 @@
 require(__DIR__ . '/../' . 'bootstrap.php');
 
 do {
-    $response = $pmio->findProcesses(1, 15);
+    /** @var \ProcessMaker\PMIO\Client $pmio */
+    $response = $pmio->listProcesses(1, 15);
     $processes = $response->getData();
     foreach($processes as $process) {
-        print("Deleting Process " . $process->getId() . "\n");
+        print("Deleting Process " . $process->getId() . " (REFID: ".$process->getAttributes()->getRefId().")\n");
         $pmio->deleteProcess($process->getId());
     }
 } while(count($processes));
